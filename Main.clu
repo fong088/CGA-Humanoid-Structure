@@ -1,0 +1,13 @@
+DefVarsN3();
+
+scale = 0.1;  		// Scale of the entire body
+
+HEAD = 150;			// NECK TO HEAD
+BACK = 400.4;		// LLJ_LNJ
+SHOULDER = 176.3;  	// LNJ_SJ
+ARM = 239.3;  		// SJ_EJ
+FOREARM = 250;		// EJ_HJ
+GROIN = 119.5;		// LLJ_HJ Vertical
+WAIST = 186.7;		// LLJ_HJ Horizontal
+KNEE = 380.6;		// HJ_KJ
+SHIN = 358.6;		// KJ_AJ
