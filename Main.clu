@@ -51,27 +51,26 @@ globalRx = Slider("Global RX",-Pi,Pi,0.1,0);// Sliders para rotación c.r.a. MR L
 globalRy = Slider("Global RY",-Pi,Pi,0.1,0);
 globalRz = Slider("Global RZ",-Pi,Pi,0.1,0);
 
-globalM = TranslatorN3(globalX,globalY,globalZ)*RotorN3(1,0,0,globalRx)*RotorN3(0,1,0,globalRy)*RotorN3(0,0,1,globalRz); // Motor Global
+M_GLOBAL = TranslatorN3(globalX,globalY,globalZ)*RotorN3(1,0,0,globalRx)*RotorN3(0,1,0,globalRy)*RotorN3(0,0,1,globalRz); // Motor Global
 
 :IPNS;
-M = globalM;
-O = M*e0*(~M) ;// Punto inicial (origen)
+O = M_GLOBAL*e0*(~M_GLOBAL) ;// Punto inicial (origen)
 
 //LLJ
 LLJ_xr = Slider("LLJ xr",-Pi,Pi,0.1,0);
 LLJ_zr = Slider("LLJ zr",-Pi,Pi,0.1,0);
 R_LLJ = RotorN3(1,0,0,LLJ_xr)*RotorN3(0,0,1,LLJ_zr);
 M_LLJ = R_LLJ;
-M = M*M_LLJ;
-P_LLJ = M*e0*(~M); 
+MLLJ = M_GLOBAL*M_LLJ;
+P_LLJ = MLLJ*e0*(~MLLJ);
 
 //UPPER
-//UPPER_AUX
 
+//UPPER_AUX
 T_UAUX = TranslatorN3(0,BACK,0);
 M_UAUX = T_UAUX; // Primer motor
-M = M*M_UAUX; //motor auxiliar ("acumulado")
-P_UAUX = M*e0*(~M);
+M_UAUX = MLLJ*M_UAUX; //motor auxiliar ("acumulado")
+P_UAUX = M_UAUX*e0*(~M_UAUX);
 
 
 //DRAWING
