@@ -1,13 +1,83 @@
 DefVarsN3();
 
-scale = 0.1;  		// Scale of the entire body
+scale = 0.001;  		// Scale of the entire body
 
-HEAD = 150;			// NECK TO HEAD
-BACK = 400.4;		// LLJ_LNJ
-SHOULDER = 176.3;  	// LNJ_SJ
-ARM = 239.3;  		// SJ_EJ
-FOREARM = 250;		// EJ_HJ
-GROIN = 119.5;		// LLJ_HJ Vertical
-WAIST = 186.7;		// LLJ_HJ Horizontal
-KNEE = 380.6;		// HJ_KJ
-SHIN = 358.6;		// KJ_AJ
+HEAD = 150 * scale;			// NECK TO HEAD
+BACK = 400.4 * scale;		// LLJ_LNJ
+SHOULDER = 176.3 * scale;  	// LNJ_SJ
+ARM = 239.3 * scale;  		// SJ_EJ
+FOREARM = 250 * scale;		// EJ_HJ
+GROIN = 119.5 * scale;		// LLJ_HJ Vertical
+WAIST = 186.7 * scale;		// LLJ_HJ Horizontal
+KNEE = 380.6 * scale;		// HJ_KJ
+SHIN = 358.6 * scale;		// KJ_AJ
+JOINT_RADIUS = 75 * scale;
+
+Cilindro =
+{
+	A = _P(1);//Entrada 1 (Punto Inicial de Cilindro)
+	B = _P(2);//Entrada 2 (Punto Final de Cilindro)
+	r = _P(3);//Entrada 3 (Radio del cilindro)
+	
+	E = einf^e0; //Plano de Minkowski
+	Ae = (A^E)*E; // Quitar parte "conformal" a Punto "A"
+	Be = (B^E)*E; // Quitar parte "conformal" a Punto "B"
+	Ce = Be - Ae; // Vector de dirección en Euclidiano que va de "A" a "B"
+ 	C = Ce + 1/2*Ce^^2*einf + e0; //Vector "Ce" en conformal
+	DrawCylinder(A,C,r);
+	[C,Ce,"Hola"] // Salida(s)
+}
+Cajita=
+{
+	C = _P(1);//Entrada 1 (Punto Centro de Caja)
+	X = _P(2);//Entrada 2 (Punto direccion 1)
+	Y = _P(3);//Entrada 3 (Punto direccion 2)
+	Z = _P(4); // Entrada 4 (Punto direccion 3)
+	
+	E = einf^e0; //Plano de Minkowski
+	D1e = ((X-C)^E)*E; 
+	D2e = ((Y-C)^E)*E; 
+	D3e = ((Z-C)^E)*E; 	
+	D1 = D1e + 1/2*D1e^^2*einf + e0; 
+	D2 = D2e + 1/2*D2e^^2*einf + e0; 
+	D3 = D3e + 1/2*D3e^^2*einf + e0; 
+	DrawBox(C,D1,D2,D3);
+}
+
+globalX = Slider("Global X",-5,5,0.1,0); // Sliders para traslación global
+globalY = Slider("Global Y",-5,5,0.1,0);
+globalZ = Slider("Global Z",-5,5,0.1,0);
+globalRx = Slider("Global RX",-Pi,Pi,0.1,0);// Sliders para rotación c.r.a. MR Local
+globalRy = Slider("Global RY",-Pi,Pi,0.1,0);
+globalRz = Slider("Global RZ",-Pi,Pi,0.1,0);
+
+globalM = TranslatorN3(globalX,globalY,globalZ)*RotorN3(1,0,0,globalRx)*RotorN3(0,1,0,globalRy)*RotorN3(0,0,1,globalRz); // Motor Global
+
+:IPNS;
+M = globalM;
+O = M*e0*(~M) ;// Punto inicial (origen)
+
+//LLJ
+LLJ_xr = Slider("LLJ xr",-Pi,Pi,0.1,0);
+LLJ_zr = Slider("LLJ zr",-Pi,Pi,0.1,0);
+R_LLJ = RotorN3(1,0,0,LLJ_xr)*RotorN3(0,0,1,LLJ_zr);
+M_LLJ = R_LLJ;
+M = M*M_LLJ;
+P_LLJ = M*e0*(~M); 
+
+//UPPER
+//UPPER_AUX
+
+T_UAUX = TranslatorN3(0,BACK,0);
+M_UAUX = T_UAUX; // Primer motor
+M = M*M_UAUX; //motor auxiliar ("acumulado")
+P_UAUX = M*e0*(~M);
+
+
+//DRAWING
+:White;
+:P_LLJ - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_UAUX - 1/2*(JOINT_RADIUS)^^2*einf;
+
+:Yellow;
+::Cilindro(P_LLJ,P_UAUX,0.05);
