@@ -1,9 +1,9 @@
 DefVarsN3();
 
-scale = 0.001;  		// Scale of the entire body
+scale = 0.004;  		// Scale of the entire body
 
-HEAD = 150 * scale;			// NECK TO HEAD
-BACK = 400.4 * scale;		// LLJ_LNJ
+HEAD = 79 * scale;			// NECK TO HEAD
+BACK = 330.4 * scale;		// LLJ_LNJ
 SHOULDER = 176.3 * scale;  	// LNJ_SJ
 ARM = 239.3 * scale;  		// SJ_EJ
 FOREARM = 250 * scale;		// EJ_HJ
@@ -11,7 +11,8 @@ GROIN = 119.5 * scale;		// LLJ_HJ Vertical
 WAIST = 186.7 * scale;		// LLJ_HJ Horizontal
 KNEE = 380.6 * scale;		// HJ_KJ
 SHIN = 358.6 * scale;		// KJ_AJ
-JOINT_RADIUS = 75 * scale;
+JOINT_RADIUS = 20 * scale;
+CILINDER_RADIUS = JOINT_RADIUS / 2;
 
 Cilindro =
 {
@@ -72,11 +73,89 @@ M_UAUX = T_UAUX; // Primer motor
 M_UAUX = MLLJ*M_UAUX; //motor auxiliar ("acumulado")
 P_UAUX = M_UAUX*e0*(~M_UAUX);
 
+//LNJ
+LNJ_xr = Slider("LNJ xr",-Pi,Pi,0.1,0);
+LNJ_yr = Slider("LNJ yr",-Pi,Pi,0.1,0);
+T_LNJ = TranslatorN3(0,HEAD,0);
+R_LNJ = RotorN3(1,0,0,LNJ_xr)*RotorN3(0,1,0,LNJ_yr);
+M_LNJ = T_LNJ*R_LNJ;
+MLNJ = M_UAUX*M_LNJ;
+P_LNJ = MLNJ*e0*(~MLNJ);
+
+//SJR
+SJR_xr = Slider("SJR xr",-Pi,Pi,0.1,0);
+SJR_yr = Slider("SJR yr",-Pi,Pi,0.1,0);
+SJR_zr = Slider("SJR zr",-Pi,Pi,0.1,0);
+T_SJR = TranslatorN3(-SHOULDER, 0,0);
+R_SJR = RotorN3(1,0,0,SJR_xr)*RotorN3(0,1,0,SJR_yr)*RotorN3(0,0,1,SJR_zr);
+M_SJR = T_SJR*R_SJR;
+MSJR = M_UAUX*M_SJR;
+P_SJR = MSJR*e0*(~MSJR);
+
+//SJL
+SJL_xr = Slider("SJL xr",-Pi,Pi,0.1,0);
+SJL_yr = Slider("SJL yr",-Pi,Pi,0.1,0);
+SJL_zr = Slider("SJL zr",-Pi,Pi,0.1,0);
+T_SJL = TranslatorN3(SHOULDER, 0,0);
+R_SJL = RotorN3(1,0,0,SJL_xr)*RotorN3(0,1,0,SJL_yr)*RotorN3(0,0,1,SJL_zr);
+M_SJL = T_SJL*R_SJL;
+MSJL = M_UAUX*M_SJL;
+P_SJL = MSJL*e0*(~MSJL);
+
+//EJR
+EJR_xr = Slider("EJR xr",-Pi,Pi,0.1,0);
+T_EJR = TranslatorN3(0, -ARM,0);
+R_EJR = RotorN3(1,0,0,EJR_xr);
+M_EJR = T_EJR*R_EJR;
+MEJR = MSJR*M_EJR;
+P_EJR = MEJR*e0*(~MEJR);
+
+//EJL
+EJL_xr = Slider("EJL xr",-Pi,Pi,0.1,0);
+T_EJL = TranslatorN3(0, -ARM,0);
+R_EJL = RotorN3(1,0,0,EJL_xr);
+M_EJL = T_EJL*R_EJL;
+MEJL = MSJL*M_EJL;
+P_EJL = MEJL*e0*(~MEJL);
+
+//HJR
+HJR_xr = Slider("HJR xr",-Pi,Pi,0.1,0);
+HJR_yr = Slider("HJR yr",-Pi,Pi,0.1,0);
+HJR_zr = Slider("HJR zr",-Pi,Pi,0.1,0);
+T_HJR = TranslatorN3(0,-FOREARM,0);
+R_HJR = RotorN3(1,0,0,HJR_xr)*RotorN3(0,1,0,HJR_yr)*RotorN3(0,0,1,HJR_zr);
+M_HJR = T_HJR*R_HJR;
+MHJR = MEJR*M_HJR;
+P_HJR = MHJR*e0*(~MHJR);
+
+//HJL
+HJL_xr = Slider("HJL xr",-Pi,Pi,0.1,0);
+HJL_yr = Slider("HJL yr",-Pi,Pi,0.1,0);
+HJL_zr = Slider("HJL zr",-Pi,Pi,0.1,0);
+T_HJL = TranslatorN3(0,-FOREARM,0);
+R_HJL = RotorN3(1,0,0,HJL_xr)*RotorN3(0,1,0,HJL_yr)*RotorN3(0,0,1,HJL_zr);
+M_HJL = T_HJL*R_HJL;
+MHJL = MEJL*M_HJL;
+P_HJL = MHJL*e0*(~MHJL);
 
 //DRAWING
 :White;
 :P_LLJ - 1/2*(JOINT_RADIUS)^^2*einf;
 :P_UAUX - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_LNJ - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_SJR - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_SJL - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_EJR - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_EJL - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_HJR - 1/2*(JOINT_RADIUS)^^2*einf;
+:P_HJL - 1/2*(JOINT_RADIUS)^^2*einf;
 
 :Yellow;
-::Cilindro(P_LLJ,P_UAUX,0.05);
+::Cilindro(P_LLJ,P_UAUX,CILINDER_RADIUS);
+::Cilindro(P_UAUX,P_LNJ,CILINDER_RADIUS);
+::Cilindro(P_UAUX,P_SJR,CILINDER_RADIUS);
+::Cilindro(P_UAUX,P_SJL,CILINDER_RADIUS);
+::Cilindro(P_SJR,P_EJR,CILINDER_RADIUS);
+::Cilindro(P_SJL,P_EJL,CILINDER_RADIUS);
+::Cilindro(P_EJR,P_HJR,CILINDER_RADIUS);
+::Cilindro(P_EJL,P_HJL,CILINDER_RADIUS);
