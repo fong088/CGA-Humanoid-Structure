@@ -1,6 +1,6 @@
 DefVarsN3();
 
-scale = 0.004;  		// Scale of the entire body
+scale = 0.002;  		// Scale of the entire body
 
 HEAD = 150 * scale;			// NECK TO HEAD
 BACK = 330.4 * scale;		// LLJ_LNJ
@@ -52,7 +52,7 @@ FileName = "datos.dat";
 
 data = ReadData(FileName); // Read file
 
-FrameNum = Slider("Frame", 1, Size(data), 1, 1);
+FrameNum = Slider("Frame", 1, Size(data)-1, 1, 1);
 
 if (Size(data) > 0) // If any rows, file was loaded
 {
