@@ -52,7 +52,7 @@ if(check)
     data = ReadData("datos.dat");
     i = Size(data);
 
-    t = round(300*Time,0)%(i-1) + 1;
+    t = round(50*Time,0)%(i-1) + 1;
     vals = data(t);
 
     globalX  = vals(1);
@@ -178,41 +178,41 @@ MLNJ = M_UAUX*M_LNJ;
 P_LNJ = MLNJ*e0*(~MLNJ);
 
 // Right Shoulder (SJR)
-T_SJR = TranslatorN3(-SHOULDER, 0,0);
+T_SJR = TranslatorN3(-SHOULDER, -30*scale,0);
 R_SJR = RotorN3(1,0,0,SJR_xr)*RotorN3(0,1,0,SJR_yr)*RotorN3(0,0,1,SJR_zr);
 M_SJR = T_SJR*R_SJR;
 MSJR = M_UAUX*M_SJR;
 P_SJR = MSJR*e0*(~MSJR);
 
 // Left Shoulder (SJL)
-T_SJL = TranslatorN3(SHOULDER, 0,0);
+T_SJL = TranslatorN3(SHOULDER, -30*scale,0);
 R_SJL = RotorN3(1,0,0,SJL_xr)*RotorN3(0,1,0,SJL_yr)*RotorN3(0,0,1,SJL_zr);
 M_SJL = T_SJL*R_SJL;
 MSJL = M_UAUX*M_SJL;
 P_SJL = MSJL*e0*(~MSJL);
 
 // Right Elbow (EJR)
-T_EJR = TranslatorN3(0, -ARM,0);
+T_EJR = TranslatorN3(-30*scale, -ARM,0);
 R_EJR = RotorN3(1,0,0,EJR_xr);
 M_EJR = T_EJR*R_EJR;
 MEJR = MSJR*M_EJR;
 P_EJR = MEJR*e0*(~MEJR);
 
 // Left Elbow (EJL)
-T_EJL = TranslatorN3(0, -ARM,0);
+T_EJL = TranslatorN3(30*scale, -ARM,0);
 R_EJL = RotorN3(1,0,0,EJL_xr);
 M_EJL = T_EJL*R_EJL;
 MEJL = MSJL*M_EJL;
 P_EJL = MEJL*e0*(~MEJL);
 
 // Right Wrist (WR)
-T_WR = TranslatorN3(0,-FOREARM,0);
+T_WR = TranslatorN3(-60*scale,-FOREARM,0);
 M_WR = T_WR;
 MWR = MEJR*M_WR;
 P_WR = MWR*e0*(~MWR);
 
 // Left Wrist (WL)
-T_WL = TranslatorN3(0,-FOREARM,0);
+T_WL = TranslatorN3(60*scale,-FOREARM,0);
 M_WL = T_WL;
 MWL = MEJL*M_WL;
 P_WL = MWL*e0*(~MWL);
@@ -331,7 +331,7 @@ Py = MAJL * VecN3(0, 70*scale, 0) * (~MAJL);
 Pz = MAJL * VecN3(0, 0, 150*scale) * (~MAJL);
 ::Cajita(P_AJL, Px, Py, Pz);
 
-// Torso Cajita (optional, for body)
+// Torso 
 Px = MLNJ * VecN3(200*scale, 0,  0) * (~MLNJ);
 Py = MLNJ * VecN3(0, 200*scale,  0) * (~MLNJ);
 Pz = MLNJ * VecN3(0, 0, 200*scale) * (~MLNJ);
