@@ -13,6 +13,7 @@
 * The user must provide a "data.dat" in the script's directory, which will have the data
 * in a specific order which is provided in the README.txt file. When the CheckBox
 * is ticked, the animation will start playing in a loop until the user unticks it.
+*
 **/
 
 DefVarsN3();
@@ -324,36 +325,29 @@ DrawLimb = { A=_P(1); B=_P(2); CILINDER_RADIUS=_P(3);:Yellow; ::Cilindro(A, B, C
 
 // --- HANDS AND FEET ---
 // Crear funcion con la escructura
-:Color(1, 1, 0.6, .95); // hands/feet color
+DrawHandFootBox = {
+    C=_P(1); M=_P(2); x=_P(3); y=_P(4); z=_P(5);
+    :Color(1, 1, 0.6, .95);
+    Px = M * VecN3(x, 0, 0) * (~M);
+    Py = M * VecN3(0, y, 0) * (~M);
+    Pz = M * VecN3(0, 0, z) * (~M);
+    ::Cajita(C, Px, Py, Pz);
+}
 
-// Right Hand
-Px = MWR * VecN3(50*scale, 0, 0) * (~MWR);
-Py = MWR * VecN3(0, 100*scale, 0) * (~MWR);
-Pz = MWR * VecN3(0, 0, 50*scale) * (~MWR);
-::Cajita(P_WR, Px, Py, Pz);
+::DrawHandFootBox(P_WR, MWR, 50*scale, 100*scale, 50*scale); // Right Hand
+::DrawHandFootBox(P_WL, MWL, 50*scale, 100*scale, 50*scale); // Left Hand
+::DrawHandFootBox(P_AJR, MAJR, 70*scale, 70*scale, 150*scale); // Right Foot
+::DrawHandFootBox(P_AJL, MAJL, 70*scale, 70*scale, 150*scale); // Left Foot
 
-// Left Hand
-Px = MWL * VecN3(50*scale, 0, 0) * (~MWL);
-Py = MWL * VecN3(0, 100*scale, 0) * (~MWL);
-Pz = MWL * VecN3(0, 0, 50*scale) * (~MWL);
-::Cajita(P_WL, Px, Py, Pz);
+// Head 
+DrawHeadBox = {
+    C=_P(1); M=_P(2); x=_P(3); y=_P(4); z=_P(5);
+    Px = M * VecN3(x, 0, 0) * (~M);
+    Py = M * VecN3(0, y, 0) * (~M);
+    Pz = M * VecN3(0, 0, z) * (~M);
+    ::Cajita(C, Px, Py, Pz);
+}
 
-// Right Foot
-Px = MAJR * VecN3(70*scale, 0, 0) * (~MAJR);
-Py = MAJR * VecN3(0, 70*scale, 0) * (~MAJR);
-Pz = MAJR * VecN3(0, 0, 150*scale) * (~MAJR);
-::Cajita(P_AJR, Px, Py, Pz);
-
-// Left Foot
-Px = MAJL * VecN3(70*scale, 0, 0) * (~MAJL);
-Py = MAJL * VecN3(0, 70*scale, 0) * (~MAJL);
-Pz = MAJL * VecN3(0, 0, 150*scale) * (~MAJL);
-::Cajita(P_AJL, Px, Py, Pz);
-
-// Torso 
-Px = MLNJ * VecN3(200*scale, 0,  0) * (~MLNJ);
-Py = MLNJ * VecN3(0, 200*scale,  0) * (~MLNJ);
-Pz = MLNJ * VecN3(0, 0, 200*scale) * (~MLNJ);
-::Cajita(P_LNJ, Px, Py, Pz);
+::DrawHeadBox(P_LNJ, MLNJ, 200*scale, 200*scale, 200*scale);
 
 // ---- End of Drawing ----
