@@ -1,4 +1,5 @@
 DefVarsN3();
+DrawFrame(0.5, "axes");
 
 /// --- Kinematic Parameters ---
 scale   = 0.004;   // Uniform scale of the model for both modes
@@ -49,10 +50,7 @@ AJR_xr=0;AJR_yr=0;AJR_zr=0;
 
 if(check)
 {
-    data = ReadData("datos.dat");
-    i = Size(data);
-
-    t = round(50*Time,0)%(i-1) + 1;
+    t = round(150*Time,0)%(i-1) + 1;
     vals = data(t);
 
     globalX  = vals(1);
@@ -286,6 +284,7 @@ P_AJL = MAJL*e0*(~MAJL);
 :P_AJL - 1/2*JOINT_RADIUS^^2*einf;
 
 // --- DRAW THE CYLINDERS (LIMBS) ---
+// Crear funcion con la escructura
 :Yellow;
 ::Cilindro(P_LLJ, P_UAUX, CILINDER_RADIUS);
 ::Cilindro(P_UAUX, P_LNJ, CILINDER_RADIUS);
@@ -305,12 +304,13 @@ P_AJL = MAJL*e0*(~MAJL);
 ::Cilindro(P_KJL, P_AJL, CILINDER_RADIUS);
 
 // --- HANDS AND FEET ---
+// Crear funcion con la escructura
 :Color(1, 1, 0.6, .95); // hands/feet color
 
 // Right Hand
 Px = MWR * VecN3(50*scale, 0, 0) * (~MWR);
 Py = MWR * VecN3(0, 100*scale, 0) * (~MWR);
-Pz = MWR * VecN3(0, 0, 50*scale) * (~MWR);
+Pz = MWR * VecN3(0, 0, 50*scale) * (~MWR); 
 ::Cajita(P_WR, Px, Py, Pz);
 
 // Left Hand
