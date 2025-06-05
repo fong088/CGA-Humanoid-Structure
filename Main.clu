@@ -1,3 +1,20 @@
+/*
+* ---- MAIN ----
+*
+* This program tries to replicate a human figure for it to animate or articulate freely.
+*
+* It has two modes:
+*
+* FREE MODE:
+* In this mode we are able to articulate the figure freely, achieved by using
+* sliders. We have every DOA required for each joint.
+*
+* ANIMATION MODE:
+* The user must provide a "data.dat" in the script's directory, which will have the data
+* in a specific order which is provided in the README.txt file. When the CheckBox
+* is ticked, the animation will start playing in a loop until the user unticks it.
+**/
+
 DefVarsN3();
 DrawFrame(0.5, "axes");
 
@@ -220,7 +237,7 @@ P_WL = MWL*e0*(~MWL);
 // "Lower Aux" (move from LLJ to groin for hips)
 T_LAUX = TranslatorN3(0,-GROIN,0);
 M_LAUX = T_LAUX;
-MLAUX = MLLJ*M_LAUX;
+MLAUX = M_GLOBAL*M_LAUX;
 P_LAUX = MLAUX*e0*(~MLAUX);
 
 // Right Hip Joint (HJR)
@@ -266,42 +283,44 @@ MAJL = MKJL*M_AJL;
 P_AJL = MAJL*e0*(~MAJL);
 
 // --- DRAW THE JOINT SPHERES ---
-:White;
-:P_LLJ - 1/2*JOINT_RADIUS^^2*einf;
-:P_UAUX - 1/2*JOINT_RADIUS^^2*einf;
-:P_LNJ - 1/2*JOINT_RADIUS^^2*einf;
-:P_SJR - 1/2*JOINT_RADIUS^^2*einf;
-:P_SJL - 1/2*JOINT_RADIUS^^2*einf;
-:P_EJR - 1/2*JOINT_RADIUS^^2*einf;
-:P_EJL - 1/2*JOINT_RADIUS^^2*einf;
-:P_WR - 1/2*JOINT_RADIUS^^2*einf;
-:P_WL - 1/2*JOINT_RADIUS^^2*einf;
-:P_HJR - 1/2*JOINT_RADIUS^^2*einf;
-:P_HJL - 1/2*JOINT_RADIUS^^2*einf;
-:P_KJR - 1/2*JOINT_RADIUS^^2*einf;
-:P_KJL - 1/2*JOINT_RADIUS^^2*einf;
-:P_AJR - 1/2*JOINT_RADIUS^^2*einf;
-:P_AJL - 1/2*JOINT_RADIUS^^2*einf;
+DrawSphereJoint = { P = _P(1); JOINT_RADIUS = _P(2); :White; :P - 1/2*JOINT_RADIUS^^2*einf; }
+
+::DrawSphereJoint(P_LLJ,JOINT_RADIUS);
+::DrawSphereJoint(P_UAUX,JOINT_RADIUS);
+::DrawSphereJoint(P_LNJ,JOINT_RADIUS);
+::DrawSphereJoint(P_SJR,JOINT_RADIUS);
+::DrawSphereJoint(P_SJL,JOINT_RADIUS);
+::DrawSphereJoint(P_EJR,JOINT_RADIUS);
+::DrawSphereJoint(P_EJL,JOINT_RADIUS);
+::DrawSphereJoint(P_WR,JOINT_RADIUS);
+::DrawSphereJoint(P_WL,JOINT_RADIUS);
+::DrawSphereJoint(P_HJR,JOINT_RADIUS);
+::DrawSphereJoint(P_HJL,JOINT_RADIUS);
+::DrawSphereJoint(P_KJR,JOINT_RADIUS);
+::DrawSphereJoint(P_KJL,JOINT_RADIUS);
+::DrawSphereJoint(P_AJR,JOINT_RADIUS);
+::DrawSphereJoint(P_AJL,JOINT_RADIUS);
+
 
 // --- DRAW THE CYLINDERS (LIMBS) ---
-// Crear funcion con la escructura
-:Yellow;
-::Cilindro(P_LLJ, P_UAUX, CILINDER_RADIUS);
-::Cilindro(P_UAUX, P_LNJ, CILINDER_RADIUS);
-::Cilindro(P_UAUX, P_SJR, CILINDER_RADIUS);
-::Cilindro(P_UAUX, P_SJL, CILINDER_RADIUS);
-::Cilindro(P_SJR, P_EJR, CILINDER_RADIUS);
-::Cilindro(P_SJL, P_EJL, CILINDER_RADIUS);
-::Cilindro(P_EJR, P_WR, CILINDER_RADIUS);
-::Cilindro(P_EJL, P_WL, CILINDER_RADIUS);
+DrawLimb = { A=_P(1); B=_P(2); CILINDER_RADIUS=_P(3);:Yellow; ::Cilindro(A, B, CILINDER_RADIUS); }
+
+::DrawLimb(P_LLJ, P_UAUX,CILINDER_RADIUS);
+::DrawLimb(P_UAUX, P_LNJ,CILINDER_RADIUS);
+::DrawLimb(P_UAUX, P_SJR,CILINDER_RADIUS);
+::DrawLimb(P_UAUX, P_SJL,CILINDER_RADIUS);
+::DrawLimb(P_SJR, P_EJR,CILINDER_RADIUS);
+::DrawLimb(P_SJL, P_EJL,CILINDER_RADIUS);
+::DrawLimb(P_EJR, P_WR,CILINDER_RADIUS);
+::DrawLimb(P_EJL, P_WL,CILINDER_RADIUS);
 
 // Lower limbs
-::Cilindro(P_LLJ, P_HJR, CILINDER_RADIUS);
-::Cilindro(P_LLJ, P_HJL, CILINDER_RADIUS);
-::Cilindro(P_HJR, P_KJR, CILINDER_RADIUS);
-::Cilindro(P_HJL, P_KJL, CILINDER_RADIUS);
-::Cilindro(P_KJR, P_AJR, CILINDER_RADIUS);
-::Cilindro(P_KJL, P_AJL, CILINDER_RADIUS);
+::DrawLimb(P_LLJ, P_HJR,CILINDER_RADIUS);
+::DrawLimb(P_LLJ, P_HJL,CILINDER_RADIUS);
+::DrawLimb(P_HJR, P_KJR,CILINDER_RADIUS);
+::DrawLimb(P_HJL, P_KJL,CILINDER_RADIUS);
+::DrawLimb(P_KJR, P_AJR,CILINDER_RADIUS);
+::DrawLimb(P_KJL, P_AJL,CILINDER_RADIUS);
 
 // --- HANDS AND FEET ---
 // Crear funcion con la escructura
@@ -310,7 +329,7 @@ P_AJL = MAJL*e0*(~MAJL);
 // Right Hand
 Px = MWR * VecN3(50*scale, 0, 0) * (~MWR);
 Py = MWR * VecN3(0, 100*scale, 0) * (~MWR);
-Pz = MWR * VecN3(0, 0, 50*scale) * (~MWR); 
+Pz = MWR * VecN3(0, 0, 50*scale) * (~MWR);
 ::Cajita(P_WR, Px, Py, Pz);
 
 // Left Hand
