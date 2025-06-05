@@ -47,12 +47,74 @@ Cajita=
 	DrawBox(C,D1,D2,D3);
 }
 
+// Animation
+FileName = "datos.dat";
+
+data = ReadData(FileName); // Read file
+
+FrameNum = Slider("Frame", 1, Size(data), 1, 1);
+
+if (Size(data) > 0) // If any rows, file was loaded
+{
+    vals = data(FrameNum);
+
+    globalX  = vals(1);
+    globalY  = vals(2);
+    globalZ  = vals(3);
+    globalRx = vals(4);
+    globalRy = vals(5);
+    globalRz = vals(6);
+
+    LLJ_xr = vals(7);
+    LLJ_zr = vals(8);
+
+    LNJ_xr = vals(9);
+    LNJ_yr = vals(10);
+
+    SJL_xr = vals(11);
+    SJL_yr = vals(12);
+    SJL_zr = vals(13);
+
+    EJL_xr = vals(14);
+
+    SJR_xr = vals(15);
+    SJR_yr = vals(16);
+    SJR_zr = vals(17);
+
+    EJR_xr = vals(18);
+
+    HJL_xr = vals(19);
+    HJL_yr = vals(20);
+    HJL_zr = vals(21);
+
+    KJL_xr = vals(22);
+
+    AJL_xr = vals(23);
+    AJL_yr = vals(24);
+    AJL_zr = vals(25);
+
+    HJR_xr = vals(26);
+    HJR_yr = vals(27);
+    HJR_zr = vals(28);
+
+    KJR_xr = vals(29);
+
+    AJR_xr = vals(30);
+    AJR_yr = vals(31);
+    AJR_zr = vals(32);
+}
+else
+{
+    ?"Esta mal este peo HAHA";
+}
+
+/*
 globalX = Slider("Global X",-5,5,0.1,0); // Sliders para traslación global
 globalY = Slider("Global Y",-5,5,0.1,0);
 globalZ = Slider("Global Z",-5,5,0.1,0);
 globalRx = Slider("Global RX",-Pi,Pi,0.1,0);// Sliders para rotación c.r.a. MR Local
 globalRy = Slider("Global RY",-Pi,Pi,0.1,0);
-globalRz = Slider("Global RZ",-Pi,Pi,0.1,0);
+globalRz = Slider("Global RZ",-Pi,Pi,0.1,0);*/
 
 M_GLOBAL = TranslatorN3(globalX,globalY,globalZ)*RotorN3(1,0,0,globalRx)*RotorN3(0,1,0,globalRy)*RotorN3(0,0,1,globalRz); // Motor Global
 
@@ -60,8 +122,8 @@ M_GLOBAL = TranslatorN3(globalX,globalY,globalZ)*RotorN3(1,0,0,globalRx)*RotorN3
 O = M_GLOBAL*e0*(~M_GLOBAL) ;// Punto inicial (origen)
 
 //LLJ
-LLJ_xr = Slider("LLJ xr",-Pi,Pi,0.1,0);
-LLJ_zr = Slider("LLJ zr",-Pi,Pi,0.1,0);
+//LLJ_xr = Slider("LLJ xr",-Pi,Pi,0.1,0);
+//LLJ_zr = Slider("LLJ zr",-Pi,Pi,0.1,0);
 R_LLJ = RotorN3(1,0,0,LLJ_xr)*RotorN3(0,0,1,LLJ_zr);
 M_LLJ = R_LLJ;
 MLLJ = M_GLOBAL*M_LLJ;
@@ -76,8 +138,8 @@ M_UAUX = MLLJ*M_UAUX; //motor auxiliar ("acumulado")
 P_UAUX = M_UAUX*e0*(~M_UAUX);
 
 //LNJ
-LNJ_xr = Slider("LNJ xr",-Pi,Pi,0.1,0);
-LNJ_yr = Slider("LNJ yr",-Pi,Pi,0.1,0);
+//LNJ_xr = Slider("LNJ xr",-Pi,Pi,0.1,0);
+//LNJ_yr = Slider("LNJ yr",-Pi,Pi,0.1,0);
 T_LNJ = TranslatorN3(0,HEAD,0);
 R_LNJ = RotorN3(1,0,0,LNJ_xr)*RotorN3(0,1,0,LNJ_yr);
 M_LNJ = T_LNJ*R_LNJ;
@@ -85,9 +147,9 @@ MLNJ = M_UAUX*M_LNJ;
 P_LNJ = MLNJ*e0*(~MLNJ);
 
 //SJR
-SJR_xr = Slider("SJR xr",-Pi,Pi,0.1,0);
-SJR_yr = Slider("SJR yr",-Pi,Pi,0.1,0);
-SJR_zr = Slider("SJR zr",-Pi,Pi,0.1,0);
+//SJR_xr = Slider("SJR xr",-Pi,Pi,0.1,0);
+//SJR_yr = Slider("SJR yr",-Pi,Pi,0.1,0);
+//SJR_zr = Slider("SJR zr",-Pi,Pi,0.1,0);
 T_SJR = TranslatorN3(-SHOULDER, 0,0);
 R_SJR = RotorN3(1,0,0,SJR_xr)*RotorN3(0,1,0,SJR_yr)*RotorN3(0,0,1,SJR_zr);
 M_SJR = T_SJR*R_SJR;
@@ -95,9 +157,9 @@ MSJR = M_UAUX*M_SJR;
 P_SJR = MSJR*e0*(~MSJR);
 
 //SJL
-SJL_xr = Slider("SJL xr",-Pi,Pi,0.1,0);
-SJL_yr = Slider("SJL yr",-Pi,Pi,0.1,0);
-SJL_zr = Slider("SJL zr",-Pi,Pi,0.1,0);
+//SJL_xr = Slider("SJL xr",-Pi,Pi,0.1,0);
+//SJL_yr = Slider("SJL yr",-Pi,Pi,0.1,0);
+//SJL_zr = Slider("SJL zr",-Pi,Pi,0.1,0);
 T_SJL = TranslatorN3(SHOULDER, 0,0);
 R_SJL = RotorN3(1,0,0,SJL_xr)*RotorN3(0,1,0,SJL_yr)*RotorN3(0,0,1,SJL_zr);
 M_SJL = T_SJL*R_SJL;
@@ -105,7 +167,7 @@ MSJL = M_UAUX*M_SJL;
 P_SJL = MSJL*e0*(~MSJL);
 
 //EJR
-EJR_xr = Slider("EJR xr",-Pi,Pi,0.1,0);
+//EJR_xr = Slider("EJR xr",-Pi,Pi,0.1,0);
 T_EJR = TranslatorN3(0, -ARM,0);
 R_EJR = RotorN3(1,0,0,EJR_xr);
 M_EJR = T_EJR*R_EJR;
@@ -113,7 +175,7 @@ MEJR = MSJR*M_EJR;
 P_EJR = MEJR*e0*(~MEJR);
 
 //EJL
-EJL_xr = Slider("EJL xr",-Pi,Pi,0.1,0);
+//EJL_xr = Slider("EJL xr",-Pi,Pi,0.1,0);
 T_EJL = TranslatorN3(0, -ARM,0);
 R_EJL = RotorN3(1,0,0,EJL_xr);
 M_EJL = T_EJL*R_EJL;
@@ -141,9 +203,9 @@ MLAUX = MLLJ*M_LAUX;
 P_LAUX = MLAUX*e0*(~MLAUX);
 
 //HJR
-HJR_xr = Slider("HJR xr",-Pi,Pi,0.1,0);
-HJR_yr = Slider("HJR yr",-Pi,Pi,0.1,0);
-HJR_zr = Slider("HJR zr",-Pi,Pi,0.1,0);
+//HJR_xr = Slider("HJR xr",-Pi,Pi,0.1,0);
+//HJR_yr = Slider("HJR yr",-Pi,Pi,0.1,0);
+//HJR_zr = Slider("HJR zr",-Pi,Pi,0.1,0);
 T_HJR = TranslatorN3(-(WAIST/2), 0,0);
 R_HJR = RotorN3(1,0,0,HJR_xr)*RotorN3(0,1,0,HJR_yr)*RotorN3(0,0,1,HJR_zr);
 M_HJR = T_HJR*R_HJR;
@@ -151,9 +213,9 @@ MHJR = MLAUX*M_HJR;
 P_HJR = MHJR*e0*(~MHJR);
 
 //HJL
-HJL_xr = Slider("HJL xr",-Pi,Pi,0.1,0);
-HJL_yr = Slider("HJL yr",-Pi,Pi,0.1,0);
-HJL_zr = Slider("HJL zr",-Pi,Pi,0.1,0);
+//HJL_xr = Slider("HJL xr",-Pi,Pi,0.1,0);
+//HJL_yr = Slider("HJL yr",-Pi,Pi,0.1,0);
+//HJL_zr = Slider("HJL zr",-Pi,Pi,0.1,0);
 T_HJL = TranslatorN3((WAIST/2), 0,0);
 R_HJL = RotorN3(1,0,0,HJL_xr)*RotorN3(0,1,0,HJL_yr)*RotorN3(0,0,1,HJL_zr);
 M_HJL = T_HJL*R_HJL;
@@ -161,7 +223,7 @@ MHJL = MLAUX*M_HJL;
 P_HJL = MHJL*e0*(~MHJL);
 
 //KJR
-KJR_xr = Slider("KJR xr",-Pi,Pi,0.1,0);
+//KJR_xr = Slider("KJR xr",-Pi,Pi,0.1,0);
 T_KJR = TranslatorN3(-AUX_KNEE, -KNEE,0);
 R_KJR = RotorN3(1,0,0,KJR_xr);
 M_KJR = T_KJR*R_KJR;
@@ -169,7 +231,7 @@ MKJR = MHJR*M_KJR;
 P_KJR = MKJR*e0*(~MKJR);
 
 //KJL
-KJL_xr = Slider("KJL xr",-Pi,Pi,0.1,0);
+//KJL_xr = Slider("KJL xr",-Pi,Pi,0.1,0);
 T_KJL = TranslatorN3(AUX_KNEE, -KNEE,0);
 R_KJL = RotorN3(1,0,0,KJL_xr);
 M_KJL = T_KJL*R_KJL;
@@ -177,9 +239,9 @@ MKJL = MHJL*M_KJL;
 P_KJL = MKJL*e0*(~MKJL);
 
 //AJR
-AJR_xr = Slider("AJR xr",-Pi,Pi,0.1,0);
-AJR_yr = Slider("AJR yr",-Pi,Pi,0.1,0);
-AJR_zr = Slider("AJR zr",-Pi,Pi,0.1,0);
+//AJR_xr = Slider("AJR xr",-Pi,Pi,0.1,0);
+//AJR_yr = Slider("AJR yr",-Pi,Pi,0.1,0);
+//AJR_zr = Slider("AJR zr",-Pi,Pi,0.1,0);
 T_AJR = TranslatorN3(-AUX_SHIN, -SHIN,0);
 R_AJR = RotorN3(1,0,0,AJR_xr)*RotorN3(0,1,0,AJR_yr)*RotorN3(0,0,1,AJR_zr);
 M_AJR = T_AJR*R_AJR;
@@ -187,9 +249,9 @@ MAJR = MKJR*M_AJR;
 P_AJR = MAJR*e0*(~MAJR);
 
 //AJL
-AJL_xr = Slider("AJL xr",-Pi,Pi,0.1,0);
-AJL_yr = Slider("AJL yr",-Pi,Pi,0.1,0);
-AJL_zr = Slider("AJL zr",-Pi,Pi,0.1,0);
+//AJL_xr = Slider("AJL xr",-Pi,Pi,0.1,0);
+//AJL_yr = Slider("AJL yr",-Pi,Pi,0.1,0);
+//AJL_zr = Slider("AJL zr",-Pi,Pi,0.1,0);
 T_AJL = TranslatorN3(AUX_SHIN, -SHIN,0);
 R_AJL = RotorN3(1,0,0,AJL_xr)*RotorN3(0,1,0,AJL_yr)*RotorN3(0,0,1,AJL_zr);
 M_AJL = T_AJL*R_AJL;
@@ -258,63 +320,3 @@ Py = MLNJ * VecN3(0, 200*scale, 0) * (~MLNJ);
 Pz = MLNJ * VecN3(0, 0, 200*scale) * (~MLNJ);
 ::Cajita(P_LNJ, Px, Py, Pz);
 
-// Animation
-FileName = "datos.dat";
-
-data = ReadData(FileName); // Try reading the file
-
-FrameNum = Slider("Frame", 1, Size(data), 1, 1);
-
-if (Size(data) > 0) // If any rows, file was loaded
-{
-    vals = data(FrameNum);
-
-    globalX  = vals(1);
-    globalY  = vals(2);
-    globalZ  = vals(3);
-    globalRx = vals(4);
-    globalRy = vals(5);
-    globalRz = vals(6);
-
-    LLJ_xr = vals(7);
-    LLJ_zr = vals(8);
-
-    LNJ_xr = vals(9);
-    LNJ_yr = vals(10);
-
-    SJL_xr = vals(11);
-    SJL_yr = vals(12);
-    SJL_zr = vals(13);
-
-    EJL_xr = vals(14);
-
-    SJR_xr = vals(15);
-    SJR_yr = vals(16);
-    SJR_zr = vals(17);
-
-    EJR_xr = vals(18);
-
-    HJL_xr = vals(19);
-    HJL_yr = vals(20);
-    HJL_zr = vals(21);
-
-    KJL_xr = vals(22);
-
-    AJL_xr = vals(23);
-    AJL_yr = vals(24);
-    AJL_zr = vals(25);
-
-    HJR_xr = vals(26);
-    HJR_yr = vals(27);
-    HJR_zr = vals(28);
-
-    KJR_xr = vals(29);
-
-    AJR_xr = vals(30);
-    AJR_yr = vals(31);
-    AJR_zr = vals(32);
-}
-else
-{
-    ?"Esta mal este peo HAHA";
-}
