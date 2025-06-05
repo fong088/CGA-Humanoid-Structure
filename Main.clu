@@ -118,19 +118,19 @@ else
 
     SJL_xr   = Slider("SJL xr",-Pi,Pi,0.1,0);
     SJL_yr   = Slider("SJL yr",-Pi,Pi,0.1,0);
-    SJL_zr   = Slider("SJL zr",-Pi,Pi,0.1,0);
+    SJL_zr   = Slider("SJL zr",-Pi,Pi,0.1,0.005);
 
-    EJL_xr   = Slider("EJL xr",-Pi,Pi,0.1,0);
+    EJL_xr   = Slider("EJL xr",-Pi,Pi,0.1,-0.3);
 
     SJR_xr   = Slider("SJR xr",-Pi,Pi,0.1,0);
     SJR_yr   = Slider("SJR yr",-Pi,Pi,0.1,0);
     SJR_zr   = Slider("SJR zr",-Pi,Pi,0.1,0);
 
-    EJR_xr   = Slider("EJR xr",-Pi,Pi,0.1,0);
+    EJR_xr   = Slider("EJR xr",-Pi,Pi,0.1,-0.3);
 
     HJL_xr   = Slider("HJL xr",-Pi,Pi,0.1,0);
     HJL_yr   = Slider("HJL yr",-Pi,Pi,0.1,0);
-    HJL_zr   = Slider("HJL zr",-Pi,Pi,0.1,0);
+    HJL_zr   = Slider("HJL zr",-Pi,Pi,0.1,-0.1);
 
     KJL_xr   = Slider("KJL xr",-Pi,Pi,0.1,0);
 
@@ -140,7 +140,7 @@ else
 
     HJR_xr   = Slider("HJR xr",-Pi,Pi,0.1,0);
     HJR_yr   = Slider("HJR yr",-Pi,Pi,0.1,0);
-    HJR_zr   = Slider("HJR zr",-Pi,Pi,0.1,0);
+    HJR_zr   = Slider("HJR zr",-Pi,Pi,0.1,0.1);
 
     KJR_xr   = Slider("KJR xr",-Pi,Pi,0.1,0);
 
